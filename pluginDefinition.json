@@ -1,0 +1,31 @@
+{
+  "identifier": "org.openmainframe.zowe.workshop-starter",
+  "apiVersion": "1.0.0",
+  "pluginVersion": "0.9.0",
+  "pluginType": "application",
+  "webContent": {
+    "framework": "angular2",
+    "launchDefinition": {
+      "pluginShortNameKey": "starter",
+      "pluginShortNameDefault": "Starter",
+      "imageSrc": "assets/icon.png"
+    },
+    "descriptionKey": "starterDescription",
+    "descriptionDefault": "Workshop starter App",
+    "isSingleWindowApp": true,
+    "defaultWindowStyle": {
+      "width": 400,
+      "height": 300,
+      "x": 0,
+      "y": 0
+    }
+  },
+  "configurationData": {
+    "resources": {
+      "tasks": {
+        "locationType": "relative",
+        "aggregationPolicy": "none"
+      }
+    }
+  }
+}

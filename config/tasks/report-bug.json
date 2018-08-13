@@ -1,0 +1,12 @@
+{
+  "description": "File a bug report",
+  "taskOwners": {
+    "department": [
+      "Engineering"
+    ],
+    "location": [
+      "WA",
+      "NY"
+    ]
+  }
+}
