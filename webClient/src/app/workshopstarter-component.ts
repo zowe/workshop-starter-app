@@ -60,18 +60,18 @@ export class WorkshopStarterComponent implements OnInit, AfterViewInit {
   ) {
 
     /*
-      RocketMVD is a global that exposes some key objects for Apps.
+      ZoweZLUX is a global that exposes some key objects for Apps.
       dispatcher is an object which is used for App to App communication.
       The dispatcher can start new App instances with context provided, or can send a message to a particular instance.
       These dispatcher abilities operate on Actions.
       Actions note the target App, what sort of command to be done for an instance of that App,
       And the format of the context object that will be sent to the App.
      */
-    this.openAppAction = RocketMVD.dispatcher.makeAction(
+    this.openAppAction = ZoweZLUX.dispatcher.makeAction(
       "org.openmainframe.zowe.workshop-starter.actions.requestusers",      
       "Request users to fulfill task",
-      RocketMVD.dispatcher.constants.ActionTargetMode.PluginCreate,
-      RocketMVD.dispatcher.constants.ActionType.Launch,
+      ZoweZLUX.dispatcher.constants.ActionTargetMode.PluginCreate,
+      ZoweZLUX.dispatcher.constants.ActionType.Launch,
       "org.openmainframe.zowe.workshop-user-browser",
       /*
         This is an argument formatter for providing context for the Action.
@@ -82,11 +82,11 @@ export class WorkshopStarterComponent implements OnInit, AfterViewInit {
       {data: {op:'deref',source:'event',path:['data']}}
     );
 
-    this.filterTableAction = RocketMVD.dispatcher.makeAction(
+    this.filterTableAction = ZoweZLUX.dispatcher.makeAction(
       "org.openmainframe.zowe.workshop-starter.actions.sortusertable",      
       "Sorts user table in App which has it",
-      RocketMVD.dispatcher.constants.ActionTargetMode.PluginFindAnyOrCreate,
-      RocketMVD.dispatcher.constants.ActionType.Message,
+      ZoweZLUX.dispatcher.constants.ActionTargetMode.PluginFindAnyOrCreate,
+      ZoweZLUX.dispatcher.constants.ActionType.Message,
       "org.openmainframe.zowe.workshop-user-browser",
       {data: {op:'deref',source:'event',path:['data']}}
     );
@@ -94,7 +94,7 @@ export class WorkshopStarterComponent implements OnInit, AfterViewInit {
     /*
       To demonstrate configurability, this App determines which types of employees can handle the task at hand by loading the rules via the Configuration Dataservice - which is a REST API that is used to manage user & administrator preferences and save data.
       */
-    this.http.get(RocketMVD.uriBroker.pluginConfigForScopeUri(this.pluginDefinition.getBasePlugin(),'instance','tasks','report-bug.json'))
+    this.http.get(ZoweZLUX.uriBroker.pluginConfigForScopeUri(this.pluginDefinition.getBasePlugin(),'instance','tasks','report-bug.json'))
       .map((res: Response) => res.json()).subscribe(
         data=> {
           this.validOwners = data.contents.taskOwners;
@@ -169,7 +169,7 @@ export class WorkshopStarterComponent implements OnInit, AfterViewInit {
    */
   requestApp():void {
     //We ensure that the user browser app exists before trying to invoke it by doing the following.
-    let plugin = RocketMVD.PluginManager.getPlugin("org.openmainframe.zowe.workshop-user-browser");
+    let plugin = ZoweZLUX.pluginManager.getPlugin("org.openmainframe.zowe.workshop-user-browser");
     if (!plugin) {
       let msg = `Cannot request User Browser App... It was not in the current environment!`
       this.userResults = msg;
@@ -179,7 +179,7 @@ export class WorkshopStarterComponent implements OnInit, AfterViewInit {
     
     this.userBrowserOpened = true;
     //In case there was a malformed object in the Dataservice Configuration, we can fallback to seeing employees without any department filter, but we expect to filter by a department.
-    RocketMVD.dispatcher.invokeAction(this.openAppAction, (!this.validOwners.department) ? null : 
+    ZoweZLUX.dispatcher.invokeAction(this.openAppAction, (!this.validOwners.department) ? null : 
       {'data':{
          'type':'load',
          'filter':{
@@ -194,7 +194,7 @@ export class WorkshopStarterComponent implements OnInit, AfterViewInit {
      When the button to filter the user browser's list is pressed, this function is called to send a message to an already opened user browser App instance via an Action of type "PluginFindAnyOrCreate". This should find our one open App and issue the message to it.
    */
   filterByLocation():void {
-    let plugin = RocketMVD.PluginManager.getPlugin("org.openmainframe.zowe.workshop-user-browser");
+    let plugin = ZoweZLUX.pluginManager.getPlugin("org.openmainframe.zowe.workshop-user-browser");
     if (!plugin) {
       let msg = `Cannot request User Browser App... It was not in the current environment!`;
       this.userResults = msg;
@@ -203,7 +203,7 @@ export class WorkshopStarterComponent implements OnInit, AfterViewInit {
     }
 
     let fallback = ()=> {
-      RocketMVD.dispatcher.invokeAction(this.filterTableAction,
+      ZoweZLUX.dispatcher.invokeAction(this.filterTableAction,
                                         {'data':{
                                           'type':'filter',
                                           'parameters': {
@@ -227,7 +227,7 @@ export class WorkshopStarterComponent implements OnInit, AfterViewInit {
           //fallback to NY for demonstration purposes.
           location = 'NY';
         }
-        RocketMVD.dispatcher.invokeAction(this.filterTableAction,
+        ZoweZLUX.dispatcher.invokeAction(this.filterTableAction,
                                           {'data':{
                                             'type':'filter',
                                             'parameters': {
